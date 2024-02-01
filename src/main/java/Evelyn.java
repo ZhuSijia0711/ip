@@ -12,7 +12,7 @@ public class Evelyn {
         else {
             System.out.println("this is your command: " + line);
             printLine();
-            echo();
+            echo(); //create a loop
         }
     }
     public static void printLine(){
