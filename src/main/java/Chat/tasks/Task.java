@@ -4,14 +4,17 @@ import java.time.LocalDate;
 import Chat.exceptions.RepeatMark;
 import Chat.exceptions.RepeatUnmark;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
+
+import static Chat.tasks.Deadlines.parseDateTime;
 
 public class Task {
     protected TaskType type;
     protected String shortType;
     protected String description;
     protected boolean isDone;
-    public String time;
+    public LocalDateTime time;
 
     public Task(String description) {
         this.description = description;
@@ -74,15 +77,18 @@ public class Task {
             }
             break;
         case "D":
+            LocalDateTime deadlineTime = parseDateTime(time);
             // Assuming Deadlines constructor takes description and by as parameters
-            task = new Deadlines(description, time);
+            task = new Deadlines(description, deadlineTime);
             if(Objects.equals(parts[1].trim(), "1")){
                 task.isDone = true;
             }
             break;
         case "E":
+            LocalDateTime eventFrom = parseDateTime(from);
+            LocalDateTime eventTo = parseDateTime(to);
             // Assuming Events constructor takes description, from, and to as parameters
-            task = new Events(description, from, to);
+            task = new Events(description, eventFrom, eventTo);
             if(Objects.equals(parts[1].trim(), "1")){
                 task.isDone = true;
             }

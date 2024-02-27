@@ -1,8 +1,12 @@
 package Chat.tasks;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import Chat.exceptions.InvalidIndex;
+
+import static Chat.tasks.Deadlines.parseDateTime;
+
 public class Parser {
     private static final String COMMAND_EXIT = "bye";
     private static final String COMMAND_LIST = "list";
@@ -112,10 +116,14 @@ public class Parser {
         }
         String description = parts[0].trim();
         String by = parts[1].trim();
-
-        taskList.addTask(new Deadlines(description, by));
-        System.out.println("Got it. I've added this task: " + description);
-        System.out.println("Now you have " + (taskList.getSize()) + " tasks in the list.");
+        try {
+            LocalDateTime byDateTime = parseDateTime(by);
+            taskList.addTask(new Deadlines(description, byDateTime));
+            System.out.println("Got it. I've added this task: " + description);
+            System.out.println("Now you have " + (taskList.getSize()) + " tasks in the list.");
+        } catch(DateTimeParseException e){
+            System.out.println("Invalid date format for deadline. Please use the format 'dd/MM/yyyy HHmm'.");
+        }
     }
 
     private static void addEventTask(String arguments) {
@@ -132,9 +140,15 @@ public class Parser {
         }
         String start = dates[0].trim();
         String end = dates[1].trim();
-        taskList.addTask(new Events(description, start, end));
-        System.out.println("Got it. I've added this task: " + description);
-        System.out.println("Now you have " + (taskList.getSize()) + " tasks in the list.");
+        try {
+            LocalDateTime startDateTime = parseDateTime(start);
+            LocalDateTime endDateTime = parseDateTime(end);
+            taskList.addTask(new Events(description, startDateTime, endDateTime));
+            System.out.println("Got it. I've added this task: " + description);
+            System.out.println("Now you have " + (taskList.getSize()) + " tasks in the list.");
+        } catch(DateTimeParseException e){
+            System.out.println("Invalid date format for deadline. Please use the format 'dd/MM/yyyy HHmm'.");
+        }
     }
 
     private static void deleteTask(String arguments) throws InvalidIndex {

@@ -1,13 +1,15 @@
 package Chat.tasks;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 public class Deadlines extends Task{
     //private String by;
     private LocalDateTime byDateTime;
     public Deadlines(String description, LocalDateTime byDateTime) {
         super(description);
         this.byDateTime = byDateTime;
-        //this.time = by;
+        this.time = byDateTime;
         this.type = TaskType.DEADLINE;
         shortType = this.type.name().substring(0, 1);
     }
@@ -17,12 +19,6 @@ public class Deadlines extends Task{
         String formattedDateTime = byDateTime.format(formatter);
         return "[" + shortType +"]" + super.toString() + "(by: "+ formattedDateTime +")";
     }
-    public String getBy(){
-        return by;
-    }
-    public LocalDateTime getByDate(){
-        return byDate;
-    }
 
     private boolean isValidDate(String by){
         return by.matches("\\d{2}/\\d{2}/\\d{4}");
@@ -30,13 +26,17 @@ public class Deadlines extends Task{
 
 
     public static LocalDateTime parseDateTime(String dateTimeString) {
-            // Define the pattern to match the input format
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
-
-            // Parse the input string into a LocalDateTime object
-        LocalDateTime dateTime = LocalDateTime.parse(dateTimeString, formatter);
-
-        return dateTime;
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
+            return LocalDateTime.parse(dateTimeString, formatter);
+        } catch (DateTimeParseException e) {
+            // If parsing fails, try parsing with ISO-8601 format
+            DateTimeFormatter isoFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+            return LocalDateTime.parse(dateTimeString, isoFormatter);
         }
+
+    }
+    public LocalDateTime getBy() {
+        return byDateTime;
     }
 }
