@@ -1,4 +1,6 @@
-D | 1 | ddd | 7
+D | 1 | ddd | null
 T | 0 | interview | null
-D | 1 | quiz | 7
+D | 1 | quiz | null
 E | 0 | 33333 | 3-0
+D | 0 | intern | null
+D | 0 | aaa | null
