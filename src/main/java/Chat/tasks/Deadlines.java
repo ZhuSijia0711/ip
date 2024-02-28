@@ -16,8 +16,8 @@ public class Deadlines extends Task{
     @Override
     public String toString(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm");
-        String formattedDateTime = byDateTime.format(formatter);
-        return "[" + shortType +"]" + super.toString() + "(by: "+ formattedDateTime +")";
+        //String formattedDateTime = byDateTime.format(formatter);
+        return "[" + shortType +"]" + super.toString() + "(by: "+ byDateTime +")";
     }
 
     private boolean isValidDate(String by){

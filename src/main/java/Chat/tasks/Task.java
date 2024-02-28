@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 import static Chat.tasks.Deadlines.parseDateTime;
+import static Chat.tasks.Events.parseDateTimeEvent;
 
 public class Task {
     protected TaskType type;
@@ -60,13 +61,12 @@ public class Task {
         String time = null;
         String from = null;
         String to = null;
-        if(parts[3] != null) {
+        if(parts.length > 3) {
             time = parts[3].trim();
-            if(time.contains("-")) {
-                String[] splitTime = time.split("-");
-                from = splitTime[0].trim();
-                to = splitTime[1].trim();
-            }
+        }
+        if(parts.length > 4){
+            from = parts[3].trim();
+            to = parts[4].trim();
         }
         Task task = null;
         switch (type) {
@@ -85,8 +85,8 @@ public class Task {
             }
             break;
         case "E":
-            LocalDateTime eventFrom = parseDateTime(from);
-            LocalDateTime eventTo = parseDateTime(to);
+            LocalDateTime eventFrom = parseDateTimeEvent(from);
+            LocalDateTime eventTo = parseDateTimeEvent(to);
             // Assuming Events constructor takes description, from, and to as parameters
             task = new Events(description, eventFrom, eventTo);
             if(Objects.equals(parts[1].trim(), "1")){

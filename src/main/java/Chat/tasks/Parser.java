@@ -6,6 +6,7 @@ import java.time.format.DateTimeParseException;
 import Chat.exceptions.InvalidIndex;
 
 import static Chat.tasks.Deadlines.parseDateTime;
+import static Chat.tasks.Events.parseDateTimeEvent;
 
 public class Parser {
     private static final String COMMAND_EXIT = "bye";
@@ -141,13 +142,13 @@ public class Parser {
         String start = dates[0].trim();
         String end = dates[1].trim();
         try {
-            LocalDateTime startDateTime = parseDateTime(start);
-            LocalDateTime endDateTime = parseDateTime(end);
+            LocalDateTime startDateTime = parseDateTimeEvent(start);
+            LocalDateTime endDateTime = parseDateTimeEvent(end);
             taskList.addTask(new Events(description, startDateTime, endDateTime));
             System.out.println("Got it. I've added this task: " + description);
             System.out.println("Now you have " + (taskList.getSize()) + " tasks in the list.");
         } catch(DateTimeParseException e){
-            System.out.println("Invalid date format for deadline. Please use the format 'dd/MM/yyyy HHmm'.");
+            System.out.println("Invalid date format for event. Please use the format 'dd/MM/yyyy HHmm'.");
         }
     }
 

@@ -3,6 +3,7 @@ package Chat.tasks;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class Events extends Task {
     private LocalDateTime from;
@@ -36,4 +37,15 @@ public class Events extends Task {
     public LocalDateTime getTo() {
         return to;
     }
+    public static LocalDateTime parseDateTimeEvent(String dateTimeString) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
+            return LocalDateTime.parse(dateTimeString, formatter);
+        } catch (DateTimeParseException e) {
+            // If parsing fails, try parsing with ISO-8601 format
+            DateTimeFormatter isoFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+            return LocalDateTime.parse(dateTimeString, isoFormatter);
+        }
+    }
+
 }

@@ -9,6 +9,8 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import java.time.format.DateTimeFormatter;
+
 public class Storage {
     private static final String FILE_PATH = "tasks.txt";
 
@@ -41,8 +43,20 @@ public class Storage {
         try {
             FileWriter writer = new FileWriter(FILE_PATH);
             for (Task task : taskList.getAllTasks()) {
-                writer.write(task.shortType + " | " + task.numisDone() +
-                        " | " + task.getDescription() + " | " + task.time + "\n");
+                if(task instanceof Deadlines){
+                    Deadlines deadline = (Deadlines) task;
+                    writer.write(task.shortType + " | " + task.numisDone() +
+                            " | " + task.getDescription() + " | " +
+                            deadline.getBy().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm")) + "\n");
+                } else if(task instanceof Events){
+                    Events event = (Events) task;
+                    writer.write(task.shortType + " | " + task.numisDone() +
+                            " | " + task.getDescription() + " | " + event.getFrom().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm")) +
+                            " | " + event.getTo().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm")) + "\n");
+                } else if(task instanceof Todos){
+                    writer.write(task.shortType + " | " + task.numisDone() + " | " + task.getDescription() + "\n");
+                }
+
             }
             writer.close();
         } catch (IOException e) {
